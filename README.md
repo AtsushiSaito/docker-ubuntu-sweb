@@ -1,17 +1,37 @@
-# docker-ubuntu-sweb
+# :package:docker-ubuntu-sweb
 
-シンプルな構成でUbuntu x noVNCをDockerで動かすプロジェクト
+Running Ubuntu x noVNC using Docker in a simple way:tada:
 
 ![Demo](https://github.com/AtsushiSaito/docker-ubuntu-sweb/blob/readme_assets/images/demo.gif?raw=true)
 
-## 特徴
-* MATEデスクトップを採用
-* ウィンドウサイズに応じたリサイズ機能
+## Features
+
+- Adopt MATE Desktop
+- Automatic window resizing feature
+- Automatic clipboard feature (https://github.com/juanjoDiaz/noVNC)
 
 ## QuickStart
-```
-docker build -t docker-ubuntu-sweb .
-docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb
+
+To start a Docker container and access `localhost:6080`.
+
+use the following command. The default username and password are `ubuntu/ubuntu`.
+
+```sh
+# Ubuntu 20.04
+docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:focal
+
+# Ubuntu 22.04
+docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:jammy
 ```
 
-`localhost:6080/vnc.html` にアクセスする。ログインパスワードは `ubuntu`です。
+## Build
+
+```sh
+# Ubuntu 20.04
+docker build -t docker-ubuntu-sweb:focal --build-arg BASE_IMAGE=ubuntu:focal .
+docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:focal
+
+# Ubuntu 22.04
+docker build -t docker-ubuntu-sweb:jammy --build-arg BASE_IMAGE=ubuntu:jammy .
+docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:jammy
+```
