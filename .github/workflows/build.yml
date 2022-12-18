@@ -1,0 +1,34 @@
+name: Build
+on: push
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [focal, jammy]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v2
+        with:
+          build-args: BASE_IMAGE=ubuntu:${{ matrix.os }}
+          context: .
+          platforms: linux/amd64, linux/arm64
+          push: true
+          tags: atsushisaito/docker-ubuntu-sweb:${{ matrix.os }}
+          cache-from: type=gha,scope=${{ matrix.os }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.os }}
