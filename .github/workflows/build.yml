@@ -30,3 +30,5 @@ jobs:
           platforms: linux/amd64, linux/arm64
           push: true
           tags: atsushisaito/docker-ubuntu-sweb:${{ matrix.os }}
+          cache-from: type=gha,scope=${{ matrix.os }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.os }}
