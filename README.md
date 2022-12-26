@@ -28,10 +28,10 @@ docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:jamm
 
 ```sh
 # Ubuntu 20.04
-docker build -t docker-ubuntu-sweb:focal --build-arg BASE_IMAGE=ubuntu:focal .
+docker build -t docker-ubuntu-sweb:focal --build-arg BASE_TAG=focal .
 docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:focal
 
 # Ubuntu 22.04
-docker build -t docker-ubuntu-sweb:jammy --build-arg BASE_IMAGE=ubuntu:jammy .
+docker build -t docker-ubuntu-sweb:jammy --build-arg BASE_TAG=jammy .
 docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:jammy
 ```
