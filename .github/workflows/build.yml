@@ -45,7 +45,7 @@ jobs:
 
       - name: Build and Push Latest
         if: ${{ matrix.os.latest == true }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           build-args: BASE_TAG=${{ matrix.os.code }}
           context: .
