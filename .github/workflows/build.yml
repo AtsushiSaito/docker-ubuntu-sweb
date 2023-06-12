@@ -17,6 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Set Current Date
+        env:
+          TZ: 'Asia/Tokyo'
+        run: echo "CURRENT_DATE=$(date +'%Y%m%d')" >> $GITHUB_ENV
+
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -41,6 +46,7 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.os.code }}
           tags: |
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}
+            atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.version }}
 
       - name: Build and Push Latest
@@ -55,5 +61,6 @@ jobs:
           cache-to: type=gha,mode=max,scope=${{ matrix.os.code }}
           tags: |
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}
+            atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.version }}
             atsushisaito/docker-ubuntu-sweb:latest
