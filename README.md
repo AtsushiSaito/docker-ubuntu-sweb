@@ -1,7 +1,9 @@
 # :package:docker-ubuntu-sweb
 
-![Docker Pulls](https://img.shields.io/docker/pulls/atsushisaito/docker-ubuntu-sweb) ![example workflow](https://github.com/AtsushiSaito/docker-ubuntu-sweb/actions/workflows/build.yml/badge.svg) ![Docker Automated build](https://img.shields.io/docker/automated/atsushisaito/docker-ubuntu-sweb) 
-![GitHub Repo stars](https://img.shields.io/github/stars/AtsushiSaito/docker-ubuntu-sweb?style=social)
+[![Docker Pulls](https://img.shields.io/docker/pulls/atsushisaito/docker-ubuntu-sweb)](https://hub.docker.com/repository/docker/atsushisaito/docker-ubuntu-sweb/tags?page=1&ordering=last_updated)
+[![example workflow](https://github.com/AtsushiSaito/docker-ubuntu-sweb/actions/workflows/build.yml/badge.svg)](https://github.com/AtsushiSaito/docker-ubuntu-sweb/actions)
+[![Docker Automated build](https://img.shields.io/docker/automated/atsushisaito/docker-ubuntu-sweb)](https://hub.docker.com/repository/docker/atsushisaito/docker-ubuntu-sweb/tags?page=1&ordering=last_updated)
+[![GitHub Repo stars](https://img.shields.io/github/stars/AtsushiSaito/docker-ubuntu-sweb?style=social)](https://github.com/AtsushiSaito/docker-ubuntu-sweb/stargazers)
 
 Running Ubuntu x noVNC using Docker in a simple way:tada:
 
