@@ -1,14 +1,17 @@
 # :package:docker-ubuntu-sweb
 
+![Docker Pulls](https://img.shields.io/docker/pulls/atsushisaito/docker-ubuntu-sweb) ![example workflow](https://github.com/AtsushiSaito/docker-ubuntu-sweb/actions/workflows/build.yml/badge.svg) ![Docker Automated build](https://img.shields.io/docker/automated/atsushisaito/docker-ubuntu-sweb) 
+![GitHub Repo stars](https://img.shields.io/github/stars/AtsushiSaito/docker-ubuntu-sweb?style=social)
+
 Running Ubuntu x noVNC using Docker in a simple way:tada:
 
 ![Demo](https://github.com/AtsushiSaito/docker-ubuntu-sweb/blob/readme_assets/images/demo.gif?raw=true)
 
 ## Features
 
-- Adopt MATE Desktop
-- Automatic window resizing feature
-- Automatic clipboard feature (https://github.com/juanjoDiaz/noVNC)
+- Using MATE Desktop
+- Automatic Window Resizing
+- Clipboard Support (https://github.com/juanjoDiaz/noVNC)
 
 ## QuickStart
 
