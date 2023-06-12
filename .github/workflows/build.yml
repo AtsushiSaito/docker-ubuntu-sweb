@@ -42,8 +42,6 @@ jobs:
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
-          cache-from: type=gha,scope=${{ matrix.os.code }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.os.code }}
           tags: |
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
@@ -57,8 +55,6 @@ jobs:
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
-          cache-from: type=gha,scope=${{ matrix.os.code }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.os.code }}
           tags: |
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}
             atsushisaito/docker-ubuntu-sweb:${{ matrix.os.code }}-${{ env.CURRENT_DATE }}
