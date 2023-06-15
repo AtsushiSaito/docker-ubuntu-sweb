@@ -4,6 +4,7 @@ FROM ubuntu:${BASE_TAG}
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+ARG TARGETARCH
 
 ####################
 # Upgrade
@@ -30,11 +31,12 @@ RUN apt-get update -q \
 ####################
 RUN apt-get update \
     && apt-get install -y \
-        tigervnc-standalone-server tigervnc-common \
-        supervisor wget curl gosu git sudo python3-pip \
+        supervisor wget gosu git sudo python3-pip tigervnc-common \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
+RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/turbovnc_3.0_${TARGETARCH}.deb \
+    && dpkg -i turbovnc.deb && rm -rf turbovnc.deb
 
 ####################
 # Add User
@@ -63,23 +65,14 @@ RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
 RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
 
 ####################
-# xstartup
-####################
-ENV XSTARTUP_PATH /home/$USER/.vnc/xstartup
-RUN echo '#!/bin/sh' >> $XSTARTUP_PATH \
-    && echo 'unset DBUS_SESSION_BUS_ADDRESS' >> $XSTARTUP_PATH \
-    && echo 'mate-session' >> $XSTARTUP_PATH
-RUN chown $USER:$USER $XSTARTUP_PATH && chmod 755 $XSTARTUP_PATH
-
-####################
 # vncserver launch
 ####################
 ENV VNCRUN_PATH /home/$USER/.vnc/vnc_run.sh
 RUN echo '#!/bin/sh' >> $VNCRUN_PATH \
     && echo 'if [ $(uname -m) = "aarch64" ]; then' >> $VNCRUN_PATH \
-    && echo '    LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 vncserver :1 -fg -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
+    && echo '    LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
     && echo 'else' >> $VNCRUN_PATH \
-    && echo '    vncserver :1 -fg -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
+    && echo '    /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
     && echo 'fi' >> $VNCRUN_PATH
 
 ####################
@@ -92,5 +85,5 @@ RUN echo '[supervisord]' >> $CONF_PATH \
     && echo '[program:vnc]' >> $CONF_PATH \
     && echo 'command=gosu '$USER' bash' $VNCRUN_PATH >> $CONF_PATH \
     && echo '[program:novnc]' >> $CONF_PATH \
-    && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5901"' >> $CONF_PATH
+    && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5900"' >> $CONF_PATH
 CMD ["bash", "-c", "supervisord -c $CONF_PATH"]
