@@ -31,7 +31,7 @@ RUN apt-get update -q \
 ####################
 RUN apt-get update \
     && apt-get install -y \
-        supervisor wget gosu git sudo python3-pip tigervnc-common \
+        supervisor wget gosu git sudo python3-pip \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -46,7 +46,7 @@ ENV PASSWD ubuntu
 RUN useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER
 RUN echo $USER:$USER | /usr/sbin/chpasswd
 RUN mkdir -p /home/$USER/.vnc \
-    && echo $PASSWD | vncpasswd -f > /home/$USER/.vnc/passwd \
+    && echo $PASSWD | /opt/TurboVNC/bin/vncpasswd -f > /home/$USER/.vnc/passwd \
     && chmod 600 /home/$USER/.vnc/passwd \
     && chown -R $USER:$USER /home/$USER
 
