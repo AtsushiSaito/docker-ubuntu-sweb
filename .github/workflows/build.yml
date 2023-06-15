@@ -38,7 +38,7 @@ jobs:
         if: ${{ matrix.os.latest == false }}
         uses: docker/build-push-action@v3
         with:
-          build-args: BASE_TAG=${{ matrix.os.code }}
+          build-args: TARGET_TAG=${{ matrix.os.code }}
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
@@ -51,7 +51,7 @@ jobs:
         if: ${{ matrix.os.latest == true }}
         uses: docker/build-push-action@v3
         with:
-          build-args: BASE_TAG=${{ matrix.os.code }}
+          build-args: TARGET_TAG=${{ matrix.os.code }}
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
