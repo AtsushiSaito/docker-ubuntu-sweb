@@ -65,17 +65,6 @@ RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
 RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
 
 ####################
-# vncserver launch
-####################
-ENV VNCRUN_PATH /home/$USER/.vnc/vnc_run.sh
-RUN echo '#!/bin/sh' >> $VNCRUN_PATH \
-    && echo 'if [ $(uname -m) = "aarch64" ]; then' >> $VNCRUN_PATH \
-    && echo '    LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
-    && echo 'else' >> $VNCRUN_PATH \
-    && echo '    /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $VNCRUN_PATH \
-    && echo 'fi' >> $VNCRUN_PATH
-
-####################
 # Supervisor
 ####################
 ENV CONF_PATH /etc/supervisor/conf.d/supervisord.conf
@@ -83,7 +72,7 @@ RUN echo '[supervisord]' >> $CONF_PATH \
     && echo 'nodaemon=true' >> $CONF_PATH \
     && echo 'user=root'  >> $CONF_PATH \
     && echo '[program:vnc]' >> $CONF_PATH \
-    && echo 'command=gosu '$USER' bash' $VNCRUN_PATH >> $CONF_PATH \
+    && echo 'command=gosu '$USER' /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $CONF_PATH \
     && echo '[program:novnc]' >> $CONF_PATH \
     && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5900"' >> $CONF_PATH
 CMD ["bash", "-c", "supervisord -c $CONF_PATH"]
