@@ -73,5 +73,5 @@ RUN echo '[supervisord]' >> $CONF_PATH \
     && echo '[program:vnc]' >> $CONF_PATH \
     && echo 'command=gosu '$USER' /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $CONF_PATH \
     && echo '[program:novnc]' >> $CONF_PATH \
-    && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5900"' >> $CONF_PATH
+    && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 6080 localhost:5900"' >> $CONF_PATH
 CMD ["bash", "-c", "supervisord -c $CONF_PATH"]
