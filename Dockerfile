@@ -31,6 +31,8 @@ RUN apt-get update -q \
 RUN apt-get update \
     && apt-get install -y \
         supervisor wget gosu git sudo python3-pip \
+        libswitch-perl libyaml-tiny-perl \
+        libhash-merge-simple-perl libdatetime-timezone-perl\
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -42,20 +44,17 @@ RUN wget -O turbovnc.deb https://jaist.dl.sourceforge.net/project/turbovnc/3.0/t
 ####################
 ENV USER ubuntu
 ENV PASSWD ubuntu
-RUN useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER
+RUN useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo,ssl-cert $USER
 RUN echo $USER:$USER | /usr/sbin/chpasswd
-RUN mkdir -p /home/$USER/.vnc \
-    && echo $PASSWD | /opt/TurboVNC/bin/vncpasswd -f > /home/$USER/.vnc/passwd \
-    && chmod 600 /home/$USER/.vnc/passwd \
-    && chown -R $USER:$USER /home/$USER
 
 ####################
-# noVNC and Websockify
+# KasmVNC
 ####################
-RUN git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc
-RUN pip install git+https://github.com/novnc/websockify.git@v0.10.0
-RUN sed -i "s/password = WebUtil.getConfigVar('password');/password = '$PASSWD'/" /usr/lib/novnc/app/ui.js
-RUN mv /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
+RUN wget https://github.com/kasmtech/KasmVNC/releases/download/v1.3.0/kasmvncserver_jammy_1.3.0_amd64.deb \
+    && apt-get install ./kasmvncserver_jammy_1.3.0_amd64.deb -y
+RUN mkdir -p /home/$USER/.vnc \
+    && gosu ubuntu bash -c 'echo -e "ubuntu\nubuntu\n" | vncpasswd -u ubuntu -w -r' \
+    && chown -R $USER:$USER /home/$USER
 
 ####################
 # Disable Update and Crash Report
@@ -70,8 +69,6 @@ ENV CONF_PATH /etc/supervisor/conf.d/supervisord.conf
 RUN echo '[supervisord]' >> $CONF_PATH \
     && echo 'nodaemon=true' >> $CONF_PATH \
     && echo 'user=root'  >> $CONF_PATH \
-    && echo '[program:vnc]' >> $CONF_PATH \
-    && echo 'command=gosu '$USER' /opt/TurboVNC/bin/vncserver :0 -fg -wm mate -geometry 1920x1080 -depth 24' >> $CONF_PATH \
-    && echo '[program:novnc]' >> $CONF_PATH \
-    && echo 'command=gosu '$USER' bash -c "websockify --web=/usr/lib/novnc 80 localhost:5900"' >> $CONF_PATH
+    && echo '[program:kasmvnc]' >> $CONF_PATH \
+    && echo 'command=gosu '$USER' /usr/bin/vncserver -select-de mate' >> $CONF_PATH
 CMD ["bash", "-c", "supervisord -c $CONF_PATH"]
