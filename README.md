@@ -27,6 +27,9 @@ docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:foca
 
 # Ubuntu 22.04
 docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:jammy
+
+# Ubuntu 24.04
+docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:noble
 ```
 
 ## Build
@@ -39,4 +42,8 @@ docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:focal
 # Ubuntu 22.04
 docker build -t docker-ubuntu-sweb:jammy --build-arg TARGET_TAG=jammy .
 docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:jammy
+
+# Ubuntu 24.04
+docker build -t docker-ubuntu-sweb:noble --build-arg TARGET_TAG=noble .
+docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:noble
 ```
