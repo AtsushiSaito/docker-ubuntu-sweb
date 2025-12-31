@@ -4,18 +4,14 @@ FROM ubuntu:${TARGET_TAG}
 ENV DEBIAN_FRONTEND noninteractive
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 
-####################
 # Upgrade
-####################
 RUN apt-get update -q \
     && apt-get upgrade -y \
     && apt-get autoclean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
     
-####################
-# Add Ubuntu Mate
-####################
+# Add Ubuntu MATE
 RUN apt-get update -q \
     && apt-get upgrade -y \
     && apt-get install -y \
@@ -24,9 +20,7 @@ RUN apt-get update -q \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-####################
 # Add Package
-####################
 RUN apt-get update \
     && apt-get install -y \
         tigervnc-standalone-server tigervnc-common \
@@ -35,9 +29,7 @@ RUN apt-get update \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
-####################
 # Add User
-####################
 ENV USER ubuntu
 ENV PASSWD ubuntu
 RUN useradd --home-dir /home/$USER --shell /bin/bash --create-home --user-group --groups adm,sudo $USER
@@ -47,23 +39,17 @@ RUN mkdir -p /home/$USER/.vnc \
     && chmod 600 /home/$USER/.vnc/passwd \
     && chown -R $USER:$USER /home/$USER
 
-####################
 # noVNC and Websockify
-####################
 RUN git clone https://github.com/AtsushiSaito/noVNC.git -b add_clipboard_support /usr/lib/novnc
 RUN pip install git+https://github.com/novnc/websockify.git@v0.10.0
 RUN sed -i "s/password = WebUtil.getConfigVar('password');/password = '$PASSWD'/" /usr/lib/novnc/app/ui.js
 RUN mv /usr/lib/novnc/vnc.html /usr/lib/novnc/index.html
 
-####################
 # Disable Update and Crash Report
-####################
 RUN sed -i 's/Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
 RUN sed -i 's/enabled=1/enabled=0/g' /etc/default/apport
 
-####################
 # Supervisor
-####################
 ENV CONF_PATH /etc/supervisor/conf.d/supervisord.conf
 RUN echo '[supervisord]' >> $CONF_PATH \
     && echo 'nodaemon=true' >> $CONF_PATH \
