@@ -7,7 +7,7 @@
 
 English | [日本語](README_ja.md)
 
-Running Ubuntu x noVNC using Docker in a simple way:tada:
+Running Ubuntu x noVNC using Docker in a simple way!
 
 ![Demo](https://github.com/AtsushiSaito/docker-ubuntu-sweb/blob/readme_assets/images/demo.gif?raw=true)
 

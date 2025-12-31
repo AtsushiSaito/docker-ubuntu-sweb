@@ -7,7 +7,7 @@
 
 [English](README.md) | 日本語
 
-Dockerを使用してUbuntu x noVNCを簡単に実行するプロジェクト:tada:
+Dockerを使用してUbuntu x noVNCを簡単に実行するプロジェクトです！
 
 ![Demo](https://github.com/AtsushiSaito/docker-ubuntu-sweb/blob/readme_assets/images/demo.gif?raw=true)
 
