@@ -12,6 +12,7 @@ jobs:
           [
             { version: 20.04, code: focal, latest: false },
             { version: 22.04, code: jammy, latest: true },
+            { version: 24.04, code: noble, latest: false }
           ]
     runs-on: ubuntu-latest
     steps:
