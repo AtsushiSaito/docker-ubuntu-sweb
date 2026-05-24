@@ -24,13 +24,13 @@ Dockerを使用してUbuntu x noVNCを簡単に実行するプロジェクトで
 
 ```sh
 # Ubuntu 20.04
-docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:focal
+docker run -p 127.0.0.1:6080:80 --rm -it atsushisaito/docker-ubuntu-sweb:focal
 
 # Ubuntu 22.04
-docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:jammy
+docker run -p 127.0.0.1:6080:80 --rm -it atsushisaito/docker-ubuntu-sweb:jammy
 
 # Ubuntu 24.04
-docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:noble
+docker run -p 127.0.0.1:6080:80 --rm -it atsushisaito/docker-ubuntu-sweb:noble
 ```
 
 ## 手動でビルドする場合
@@ -38,13 +38,13 @@ docker run -p 6080:80 --rm -it --privileged atsushisaito/docker-ubuntu-sweb:nobl
 ```sh
 # Ubuntu 20.04
 docker build -t docker-ubuntu-sweb:focal --build-arg TARGET_TAG=focal .
-docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:focal
+docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:focal
 
 # Ubuntu 22.04
 docker build -t docker-ubuntu-sweb:jammy --build-arg TARGET_TAG=jammy .
-docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:jammy
+docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:jammy
 
 # Ubuntu 24.04
 docker build -t docker-ubuntu-sweb:noble --build-arg TARGET_TAG=noble .
-docker run -p 6080:80 --rm -it --privileged docker-ubuntu-sweb:noble
+docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:noble
 ```
