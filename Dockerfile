@@ -34,9 +34,27 @@ ENV USER ubuntu
 ENV PASSWD ubuntu
 RUN useradd -m -s /bin/bash -G adm,sudo $USER 2>/dev/null || usermod -aG adm,sudo $USER
 RUN echo $USER:$USER | /usr/sbin/chpasswd
-RUN mkdir -p /home/$USER/.vnc \
+# TigerVNC >= 1.15 (Ubuntu 26.04 "resolute") uses ~/.config/tigervnc instead of
+# ~/.vnc and aborts startup trying to migrate the old dir. Write the password to
+# both locations so it works on old (focal/jammy/noble) and new TigerVNC.
+RUN mkdir -p /home/$USER/.vnc /home/$USER/.config/tigervnc \
     && echo $PASSWD | vncpasswd -f > /home/$USER/.vnc/passwd \
-    && chmod 600 /home/$USER/.vnc/passwd \
+    && echo $PASSWD | vncpasswd -f > /home/$USER/.config/tigervnc/passwd \
+    && chmod 600 /home/$USER/.vnc/passwd /home/$USER/.config/tigervnc/passwd \
+    && chown -R $USER:$USER /home/$USER
+
+# Explicitly launch the MATE session on VNC start. The default Xtigervnc-session
+# no longer brings up the desktop on newer Ubuntu, so vncserver exits instantly
+# and supervisor gives up ("vnc entered FATAL state"). Provide xstartup in both
+# the old (~/.vnc) and new (~/.config/tigervnc) TigerVNC locations.
+RUN printf '%s\n' '#!/bin/sh' \
+        'unset SESSION_MANAGER' \
+        'unset DBUS_SESSION_BUS_ADDRESS' \
+        'export XDG_SESSION_TYPE=x11' \
+        'exec dbus-launch --exit-with-session mate-session' \
+        > /home/$USER/.vnc/xstartup \
+    && cp /home/$USER/.vnc/xstartup /home/$USER/.config/tigervnc/xstartup \
+    && chmod +x /home/$USER/.vnc/xstartup /home/$USER/.config/tigervnc/xstartup \
     && chown -R $USER:$USER /home/$USER
 
 # noVNC and Websockify

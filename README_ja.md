@@ -47,4 +47,8 @@ docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:jammy
 # Ubuntu 24.04
 docker build -t docker-ubuntu-sweb:noble --build-arg TARGET_TAG=noble .
 docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:noble
+
+# Ubuntu 26.04
+docker build -t docker-ubuntu-sweb:resolute --build-arg TARGET_TAG=resolute .
+docker run -p 127.0.0.1:6080:80 --rm -it docker-ubuntu-sweb:resolute
 ```
